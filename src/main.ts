@@ -564,6 +564,7 @@ async function enhanceIssueDetailPage() {
         switch (mergeRequestStatus) {
           case 'opened': {
             $(mergeRequest).css({ 'background-color': '#f9eeda' });
+            $(mergeRequest).addClass('gl-text-gray-500');
             break;
           }
           case 'merged': {
