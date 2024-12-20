@@ -185,14 +185,16 @@ function createDiffStat(
   fileCount: number,
   addLineCount: number,
   deleteLinCount: number,
+  fileNamesTooltipText: string,
 ) {
   $('<div/>')
     .css({ display: 'flex', 'flex-direction': 'row', gap: '3px' })
     .append(
       $('<div/>', { class: 'diff-stats-group' }).append(
         $('<span/>', {
-          class: 'gl-text-gray-500 bold',
+          class: 'gl-text-gray-500 bold has-tooltip',
           text: `${fileCount} files`,
+          title: fileNamesTooltipText,
         }),
       ),
 
@@ -518,10 +520,16 @@ async function addMergeRequestDiffMeta(
     return;
   }
 
-  const { addedLineCount, deleteLinCount, fileCount } =
+  const { addedLineCount, deleteLinCount, fileCount, fileNamesTooltipText } =
     dehydrateDiff(diffsMeta);
 
-  createDiffStat(element, fileCount, addedLineCount, deleteLinCount);
+  createDiffStat(
+    element,
+    fileCount,
+    addedLineCount,
+    deleteLinCount,
+    fileNamesTooltipText,
+  );
 }
 
 function dehydrateDiff(diffsMeta: DiffsMeta) {
@@ -535,6 +543,7 @@ function dehydrateDiff(diffsMeta: DiffsMeta) {
   let addedLineCount = 0;
   let deleteLinCount = 0;
   let fileCount = 0;
+  let fileNamesTooltipText = '';
 
   file_loop: for (const file of diffsMeta.diff_files) {
     for (const excludeRegexp of excludeRegexps) {
@@ -545,12 +554,14 @@ function dehydrateDiff(diffsMeta: DiffsMeta) {
     addedLineCount += file.added_lines;
     deleteLinCount += file.removed_lines;
     fileCount += 1;
+    fileNamesTooltipText += `${fileCount > 1 ? '; ' : ''}${file.new_path}`;
   }
 
   return {
     addedLineCount,
     deleteLinCount,
     fileCount,
+    fileNamesTooltipText,
   };
 }
 
