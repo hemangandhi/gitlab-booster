@@ -550,8 +550,9 @@ async function enhanceIssueDetailPage() {
         }
         const mergeRequestStatus = statusSvg.getAttribute('aria-label');
 
-        const mergeRequestUrl =
-          mergeRequest.querySelector<HTMLAnchorElement>('.item-title a')?.href;
+        const mergeRequestLink =
+          mergeRequest.querySelector<HTMLAnchorElement>('.item-title a');
+        const mergeRequestUrl = mergeRequestLink?.href;
 
         if (!mergeRequestUrl) {
           return;
@@ -564,7 +565,7 @@ async function enhanceIssueDetailPage() {
         switch (mergeRequestStatus) {
           case 'opened': {
             $(mergeRequest).css({ 'background-color': '#f9eeda' });
-            $(mergeRequest).addClass('gl-text-gray-500');
+            $(mergeRequestLink).css({ color: '#737278' });
             break;
           }
           case 'merged': {
