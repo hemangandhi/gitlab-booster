@@ -631,8 +631,9 @@ async function enhanceIssueDetailPage() {
             return;
           }
           default: {
+            $(mergeRequest).css({ 'background-color': '#f9eeda' });
             $(mergeRequestAnchor).css({
-              color: 'var(--primary)',
+              color: '#737278',
             });
           }
         }
